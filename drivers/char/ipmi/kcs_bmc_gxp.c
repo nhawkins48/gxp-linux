@@ -70,11 +70,14 @@ static void hpe_kcs_outb(struct kcs_bmc_device *kcs_bmc, u32 reg, u8 data)
 
 static void hpe_kcs_updateb(struct kcs_bmc_device *kcs_bmc, u32 reg, u8 mask, u8 val)
 {
-        struct gxp_kcs_bmc *priv = to_gxp_kcs_bmc(kcs_bmc);
+        /* struct gxp_kcs_bmc *priv = to_gxp_kcs_bmc(kcs_bmc);
         int rc;
 
         rc = regmap_update_bits(priv->kcsRegMap, reg, mask, val);
         WARN(rc != 0, "regmap_update_bits() failed: %d\n", rc);
+
+	*/
+	pr_debug("%s Reg %x Mask %x Val %x\n", __func__, reg, mask, val);
 }
 
 
