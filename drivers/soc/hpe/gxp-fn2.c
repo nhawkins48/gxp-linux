@@ -299,7 +299,7 @@ static int gxp_fn2_probe(struct platform_device *pdev)
 	girq->num_parents = 0;
 	girq->parents = NULL;
 	girq->default_type = IRQ_TYPE_NONE;
-	girq->handler = handle_simple_irq;
+	girq->handler = handle_edge_irq;
 
 
 /*	ret = gpiochip_irqchip_add(&drvdata->gpio_chip,
