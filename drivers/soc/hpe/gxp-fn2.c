@@ -253,7 +253,6 @@ static int gxp_fn2_probe(struct platform_device *pdev)
 	int ret;
 	struct gxp_fn2_drvdata *drvdata;
 	struct resource *res;
-	struct gpio_chip *chip;
 	struct gpio_irq_chip *girq;
 
 
@@ -286,13 +285,7 @@ static int gxp_fn2_probe(struct platform_device *pdev)
 	drvdata->gpio_chip.ngpio = 100;
 	drvdata->gpio_chip.parent = &pdev->dev;
 
-	ret = devm_gpiochip_add_data(&pdev->dev, &drvdata->gpio_chip, NULL);
-	if (ret < 0)
-		dev_err(&pdev->dev, "Could not register gpiochip for fn2, %d\n", ret);
-
-
-	chip = &drvdata->gpio_chip;
-	girq = &chip->irq;
+	girq = &drvdata->gpio_chip.irq;
 	girq->chip = &gxp_gpio_irqchip;
 	/* This will let us handle the parent IRQ in the driver */
 	girq->parent_handler = NULL;
@@ -300,16 +293,6 @@ static int gxp_fn2_probe(struct platform_device *pdev)
 	girq->parents = NULL;
 	girq->default_type = IRQ_TYPE_NONE;
 	girq->handler = handle_edge_irq;
-
-
-/*	ret = gpiochip_irqchip_add(&drvdata->gpio_chip,
-	&gxp_gpio_irqchip, 0, handle_edge_irq, IRQ_TYPE_NONE);
-	if (ret) {
-		dev_info(&pdev->dev, "Could not add irqchip - %d\n", ret);
-		gpiochip_remove(&drvdata->gpio_chip);
-		return ret;
-	}
-*/
 
 	// Set up interrupt from fn2 system event reg
 
@@ -327,6 +310,11 @@ static int gxp_fn2_probe(struct platform_device *pdev)
 		return ret;
 	}
 
+	ret = devm_gpiochip_add_data(&pdev->dev, &drvdata->gpio_chip, NULL);
+	if (ret < 0)
+		dev_err(&pdev->dev, "Could not register gpiochip for fn2, %d\n", ret);
+	dev_info(&pdev->dev, "HPE GXP FN2 driver loaded.\n");
+
 	return 0;
 }
 
@@ -340,4 +328,5 @@ static struct platform_driver gxp_fn2_driver = {
 module_platform_driver(gxp_fn2_driver);
 
 MODULE_AUTHOR("Gilbert Chen <gilbert.chen@hpe.com>");
+MODULE_AUTHOR("Jorge Cisneros <jorge.cisneros@hpe.com>");
 MODULE_DESCRIPTION("HPE GXP FN2 Driver");
