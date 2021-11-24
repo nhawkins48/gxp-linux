@@ -510,7 +510,7 @@ config RENESAS_OSTM
 	bool "Renesas OSTM timer driver" if COMPILE_TEST
 	select CLKSRC_MMIO
 	select TIMER_OF
-	help
+	helpG615
 	  Enables the support for the Renesas OSTM.
 
 config SH_TIMER_TMU
@@ -612,6 +612,11 @@ config CLKSRC_ST_LPC
 	help
 	  Enable this option to use the Low Power controller timer
 	  as clocksource.
+
+config GXP_TIMER
+	bool "GXP timer driver"
+	depends on ARCH_HPE
+	default y
 
 config ATCPIT100_TIMER
 	bool "ATCPIT100 timer driver"
