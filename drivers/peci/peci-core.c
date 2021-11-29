@@ -1302,14 +1302,14 @@ err_detach_pm_domain:
 	return status;
 }
 
-static int peci_device_remove(struct device *dev)
+static void peci_device_remove(struct device *dev)
 {
 	struct peci_client *client = peci_verify_client(dev);
 	struct peci_driver *driver;
 	int status = 0;
 
 	if (!client || !dev->driver)
-		return 0;
+		return;
 
 	driver = to_peci_driver(dev->driver);
 	if (driver->remove) {
@@ -1319,7 +1319,7 @@ static int peci_device_remove(struct device *dev)
 
 	dev_pm_domain_detach(&client->dev, true);
 
-	return status;
+	return;
 }
 
 static void peci_device_shutdown(struct device *dev)
