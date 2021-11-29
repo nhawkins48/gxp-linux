@@ -510,7 +510,7 @@ config RENESAS_OSTM
 	bool "Renesas OSTM timer driver" if COMPILE_TEST
 	select CLKSRC_MMIO
 	select TIMER_OF
-	helpG615
+	help
 	  Enables the support for the Renesas OSTM.
 
 config SH_TIMER_TMU
